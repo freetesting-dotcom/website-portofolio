@@ -1,150 +1,103 @@
-// Reasons database
-const reasons = [
-    { 
-        text: "Kamu adalah orang yang begitu baik dan luar biasa. 💖", 
-        emoji: "🌟",
-        gif: "gif1.gif" // Pastikan nama file gif ini benar dan ada di folder yang sama
-    },
-    { 
-        text: "Semoga harimu dipenuhi dengan cinta, tawa, dan kebahagiaan. 🌸 ", 
-        emoji: "💗",
-        gif: "gif2.gif" // Pastikan nama file gif ini benar dan ada di folder yang sama
-    },
-    { 
-        text: "Semoga kebahagiaan dan segala hal yang didambakan selalu terwujud. ✨ ", 
-        emoji: "💕",
-        gif: "gif1.gif"
-    },
-    { 
-        text: "Tetaplah menjadi sosok gadis yang luar biasa—yang selalu menebarkan energi positif di sekeliling kamu.  🥳 ", 
-        emoji: "🌟",
-        gif: "gif2.gif"
-    }
-];
-
-// State management
-let currentReasonIndex = 0;
-const reasonsContainer = document.getElementById('reasons-container');
-const shuffleButton = document.querySelector('.shuffle-button');
-const reasonCounter = document.querySelector('.reason-counter');
-let isTransitioning = false;
-let isStoryMode = false; // Tambahan penanda agar tombol tidak error saat ganti fungsi
-
-// Create reason card with gif
-function createReasonCard(reason) {
-    const card = document.createElement('div');
-    card.className = 'reason-card';
-    
-    const text = document.createElement('div');
-    text.className = 'reason-text';
-    text.innerHTML = `${reason.emoji} ${reason.text}`;
-    
-    const gifOverlay = document.createElement('div');
-    gifOverlay.className = 'gif-overlay';
-    gifOverlay.innerHTML = `<img src="${reason.gif}" alt="Memori Spesial">`;
-    
-    card.appendChild(text);
-    card.appendChild(gifOverlay);
-    
-    // Fitur khusus HP: Munculkan GIF saat kartu ditap/disentuh
-    card.addEventListener('click', () => {
-        // Hilangkan GIF di kartu lain jika ada, agar fokus ke 1 GIF
-        document.querySelectorAll('.reason-card').forEach(c => {
-            if(c !== card) c.classList.remove('active');
-        });
-        // Tampilkan/Sembunyikan GIF di kartu yang ditap
-        card.classList.toggle('active');
-    });
-    
-    gsap.from(card, {
-        opacity: 0,
-        y: 50,
-        duration: 0.5,
-        ease: "back.out"
-    });
-
-    return card;
-}
-
-// Display new reason
-function displayNewReason() {
-    if (isTransitioning) return;
-    isTransitioning = true;
-
-    if (currentReasonIndex < reasons.length) {
-        const card = createReasonCard(reasons[currentReasonIndex]);
-        reasonsContainer.appendChild(card);
-        
-        // Update counter
-        reasonCounter.textContent = `Pesan ${currentReasonIndex + 1} dari ${reasons.length}`;
-        
-        currentReasonIndex++;
-
-        // Check if we should transform the button
-        if (currentReasonIndex === reasons.length) {
-            gsap.to(shuffleButton, {
-                scale: 1.1,
-                duration: 0.5,
-                ease: "elastic.out",
-                onComplete: () => {
-                    shuffleButton.textContent = "Enter Our Storylane 💫";
-                    shuffleButton.classList.add('story-mode');
-                    isStoryMode = true; // Mengaktifkan mode pindah halaman
-                }
-            });
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Daftar Pesan & GIF (Setiap pesan dipasangkan dengan file GIF/gambar)
+    const reasons = [
+        {
+            text: "💖 Kamu adalah orang yang begitu baik dan luar biasa. 💖",
+            gif: "./gif1.gif" // Ganti dengan nama file GIF kamu (misal: ./d1.gif atau link URL GIF)
+        },
+        {
+            text: "🌸 Makasih ya udah selalu ada dan menghiasi hari-hariku.🌸",
+            gif: "./gif2.gif"
+        },
+        {
+            text: "✨ Setiap momen bareng kamu itu selalu berharga dan bikin bahagia.✨",
+            gif: "./gif1.gif"
+        },
+        {
+            text: "🥳 Semoga di usia yang baru ini, semua impianmu bisa terwujud!🥳",
+            gif: "./gif2.gif"
         }
+    ];
 
-        // Create floating elements
-        createFloatingElement();
-        
-        setTimeout(() => {
-            isTransitioning = false;
-        }, 500);
+    const container = document.getElementById('reasons-container');
+    const button = document.querySelector('.shuffle-button');
+    const counter = document.querySelector('.reason-counter');
+    const endingSection = document.querySelector('.ending-section');
+
+    let currentIndex = 0;
+
+    // Sembunyikan bagian penutup di awal
+    if (endingSection) {
+        endingSection.style.display = 'none';
     }
-}
 
-// Initialize button click
-shuffleButton.addEventListener('click', () => {
-    // Jika tombol sudah berubah jadi 'Enter Our Storylane', pindah ke last.html
-    if (isStoryMode) {
-        gsap.to('body', {
-            opacity: 0,
-            duration: 1,
-            onComplete: () => {
-                window.location.href = 'last.html'; 
+    // Fungsi untuk menampilkan pesan & GIF berdasarkan indeksnya
+    function displayReason(index) {
+        if (index < reasons.length) {
+            const item = reasons[index];
+            
+            // Mengambil teks dan gif (mendukung format Object maupun String biasa)
+            const textContent = typeof item === 'object' ? item.text : item;
+            const gifSrc = typeof item === 'object' ? item.gif : null;
+
+            // Tampilkan isi kartu (GIF di atas, Teks di bawah)
+            container.innerHTML = `
+                <div class="reason-card">
+                    ${gifSrc ? `
+                        <div class="gif-overlay">
+                            <img src="${gifSrc}" alt="Cute GIF">
+                        </div>
+                    ` : ''}
+                    <p class="reason-text">${textContent}</p>
+                </div>
+            `;
+
+            // Animasi GSAP saat kartu berganti
+            if (typeof gsap !== 'undefined') {
+                gsap.fromTo('.reason-card', 
+                    { scale: 0.8, opacity: 0, y: 15 },
+                    { scale: 1, opacity: 1, y: 0, duration: 0.5, ease: "back.out(1.7)" }
+                );
             }
-        });
-        return; // Hentikan fungsi di sini agar tidak error
+
+            // Update teks indikator (Pesan X dari Y)
+            if (counter) {
+                counter.textContent = `Pesan ${index + 1} dari ${reasons.length}`;
+            }
+
+            // Ubah teks tombol jika sudah di pesan terakhir
+            if (index === reasons.length - 1) {
+                button.textContent = "Lihat Penutup ❤️";
+            } else {
+                button.textContent = "Pesan Selanjutnya 💕";
+            }
+        } else {
+            // Jika pesan sudah selesai semua
+            container.style.display = 'none';
+            button.style.display = 'none';
+            if (counter) counter.style.display = 'none';
+
+            // Tampilkan bagian penutup
+            if (endingSection) {
+                endingSection.style.display = 'block';
+                if (typeof gsap !== 'undefined') {
+                    gsap.fromTo(endingSection, 
+                        { opacity: 0, y: 20 },
+                        { opacity: 1, y: 0, duration: 0.8 }
+                    );
+                }
+            }
+        }
     }
 
-    // Jika belum, lanjutkan memunculkan pesan baru
-    gsap.to(shuffleButton, {
-        scale: 0.9,
-        duration: 0.1,
-        yoyo: true,
-        repeat: 1
-    });
-    displayNewReason();
+    // --- LANGSUNG TAMPILKAN PESAN PERTAMA SAAT HALAMAN DIBUKA ---
+    displayReason(currentIndex);
+
+    // --- EVENT KLIK TOMBOL UNTUK PINDAH KE PESAN BERIKUTNYA ---
+    if (button) {
+        button.addEventListener('click', () => {
+            currentIndex++;
+            displayReason(currentIndex);
+        });
+    }
 });
-
-// Floating elements function
-function createFloatingElement() {
-    const elements = ['🌸', '✨', '💖', '🦋', '⭐'];
-    const element = document.createElement('div');
-    element.className = 'floating';
-    element.textContent = elements[Math.floor(Math.random() * elements.length)];
-    element.style.left = Math.random() * window.innerWidth + 'px';
-    element.style.top = Math.random() * window.innerHeight + 'px';
-    element.style.fontSize = (Math.random() * 20 + 10) + 'px';
-    document.body.appendChild(element);
-
-    gsap.to(element, {
-        y: -500,
-        duration: Math.random() * 10 + 10,
-        opacity: 0,
-        onComplete: () => element.remove()
-    });
-}
-
-// Create initial floating elements
-setInterval(createFloatingElement, 2000);

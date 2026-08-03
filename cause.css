@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Comic+Neue:wght@700&family=Quicksand:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Comic+Neue:wght@700&family=Quicksand:wght@500;600&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* cursor: none; <-- Dihapus agar kursor kembali normal */
 }
 
 body {
@@ -17,10 +16,8 @@ body {
     padding: 2rem;
 }
 
-/* Kode .custom-cursor dihapus seluruhnya dari sini */
-
 .container {
-    max-width: 1200px;
+    max-width: 800px;
     margin: 0 auto;
     text-align: center;
     position: relative;
@@ -33,106 +30,104 @@ h1 {
     color: #ff69b4;
     text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.3);
     margin-bottom: 2rem;
-    animation: bounce 1s ease infinite;
+    animation: bounce 1.5s ease infinite;
 }
 
+/* KARTU ALASAN (Flexbox Vertikal) */
 .reason-card {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 20px;
-    padding: 2rem;
-    margin: 1.5rem;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    padding: 2rem 1.5rem;
+    margin: 1.5rem auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    /* Mengatur GIF & Teks tersusun ke bawah */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    
+    max-width: 600px;
+    width: 100%;
 }
 
 .reason-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(255, 105, 180, 0.2);
+    box-shadow: 0 12px 30px rgba(255, 105, 180, 0.25);
 }
 
-.reason-text {
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    position: relative;
-    z-index: 2;
-}
-
+/* PEMBUNGKUS GIF (Tanpa Position Absolute) */
 .gif-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.95);
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s;
-    z-index: 1;
+    opacity: 1; /* Selalu tampil */
+    background: transparent;
 }
 
-/* Menambahkan styling img agar GIF rapi dan tidak kebesaran/terpotong */
-.gif-overlay img {
-    max-width: 90%;
-    max-height: 90%;
+/* STYLING UKURAN GIF (Proporsional & Responsif) */
+.gif-overlay img,
+.reason-card img {
+    max-width: 160px; /* Batas lebar GIF agar tidak terlalu besar */
+    max-height: 160px;
+    width: 100%;
+    height: auto;
     object-fit: contain;
-    border-radius: 10px;
+    border-radius: 12px;
 }
 
-/* Menambahkan :active (saat di-tap di HP) dan class .active untuk opsi via JS nanti */
-.reason-card:hover .gif-overlay,
-.reason-card:active .gif-overlay,
-.reason-card.active .gif-overlay {
-    opacity: 1;
+/* TEKS PESAN */
+.reason-text, 
+.reason-card p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #4a4a4a;
+    line-height: 1.6;
+    margin: 0;
 }
 
+/* TOMBOL SHUFFLE / LANJUT */
 .shuffle-button {
     background: linear-gradient(45deg, #ff69b4, #ff99cc);
     border: none;
     border-radius: 50px;
-    padding: 1rem 2rem;
+    padding: 1rem 2.5rem;
     font-size: 1.2rem;
     color: white;
-    margin: 2rem 0;
+    margin: 1.5rem 0 0.5rem;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     font-family: 'Comic Neue', cursive;
     box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+    display: inline-block;
+    text-decoration: none;
 }
 
 .shuffle-button.story-mode {
     background: linear-gradient(45deg, #9b6dff, #ff6dc7);
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .shuffle-button:hover {
-    transform: scale(1.1);
-}
-
-.shuffle-button.story-mode:hover {
-    transform: scale(1.2);
+    transform: scale(1.08);
+    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.5);
 }
 
 .reason-counter {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: #ff69b4;
-    margin-top: 1rem;
-    opacity: 0.7;
+    margin-top: 0.5rem;
+    font-weight: 600;
+    opacity: 0.8;
 }
 
-.floating {
-    position: fixed;
-    pointer-events: none;
-    animation: float 3s ease-in-out infinite;
-}
-
+/* ENDING SECTION */
 .ending-section {
-    margin-top: 4rem;
-    padding: 2rem;
+    margin-top: 3rem;
+    padding: 2rem 1rem;
     text-align: center;
 }
 
@@ -140,50 +135,66 @@ h1 {
     font-family: 'Bubblegum Sans', cursive;
     font-size: 2rem;
     color: #ff69b4;
-    margin-bottom: 2rem;
-    opacity: 0;
-    transform: translateY(20px);
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .teddy-hug {
-    width: 200px;
+    max-width: 280px;
     margin: 0 auto;
-    transform: scale(0);
 }
 
+.teddy-hug img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* ANIMASI KEYFRAMES */
 @keyframes gradientBG {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
-}
-
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-8px); }
 }
 
-/* Responsivitas untuk layar HP */
+/* RESPONSIVITAS UNTUK HP */
 @media (max-width: 768px) {
     body {
-        padding: 1rem; /* Mengurangi padding agar konten lebih lebar di HP */
+        padding: 1rem;
     }
+    
     h1 { 
-        font-size: 2rem; 
+        font-size: 2.2rem; 
     }
+    
     .reason-card { 
-        margin: 1rem 0; /* Menyesuaikan margin di HP */
-        padding: 1.5rem;
+        margin: 1rem auto;
+        padding: 1.5rem 1rem;
+        gap: 1rem;
     }
-    .reason-text { 
-        font-size: 1rem; 
+    
+    .gif-overlay img,
+    .reason-card img {
+        max-width: 130px; /* Ukuran GIF disesuaikan untuk layar HP */
     }
+
+    .reason-text,
+    .reason-card p { 
+        font-size: 1.05rem; 
+    }
+    
     .shuffle-button {
-        padding: 0.8rem 1.5rem;
+        padding: 0.8rem 1.8rem;
         font-size: 1rem;
+    }
+
+    .ending-text {
+        font-size: 1.6rem;
     }
 }
