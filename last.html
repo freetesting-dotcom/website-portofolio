@@ -30,17 +30,9 @@
         }
 
         @keyframes gradientFlow {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* Enhanced Sparkle Effect */
@@ -54,31 +46,6 @@
             z-index: 1;
         }
 
-        .sparkle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background-color: white;
-            animation: twinkle var(--duration, 4s) ease-in-out infinite;
-            opacity: 0;
-        }
-
-        @keyframes twinkle {
-
-            0%,
-            100% {
-                opacity: 0;
-                transform: scale(0.5);
-            }
-
-            50% {
-                opacity: 0.8;
-                transform: scale(1);
-            }
-        }
-
-        /* Generate 50 sparkles with different positions and animations */
         .magic-sparkles::before,
         .magic-sparkles::after {
             content: '';
@@ -97,18 +64,15 @@
         }
 
         @keyframes sparkleLayer {
-            0% {
-                transform: translateY(0);
-            }
-
-            100% {
-                transform: translateY(-50px);
-            }
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50px); }
         }
 
         /* Floating Hearts */
         .floating-hearts {
             position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
@@ -126,10 +90,11 @@
         @keyframes floatHeart {
             0% {
                 transform: translate(0, 100vh) rotate(0deg);
+                opacity: 1;
             }
-
             100% {
                 transform: translate(var(--translate-x, 0), -100vh) rotate(360deg);
+                opacity: 0;
             }
         }
 
@@ -163,7 +128,7 @@
             margin: 0 auto;
             padding: 2rem;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             z-index: 3;
             position: relative;
@@ -179,7 +144,8 @@
             overflow: hidden;
         }
 
-        .memory-card:hover {
+        .memory-card:hover,
+        .memory-card:active {
             transform: translateY(-10px) scale(1.02);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
@@ -216,7 +182,7 @@
         .memory-date {
             font-family: 'Dancing Script', cursive;
             color: #ff69b4;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             margin-bottom: 0.5rem;
         }
 
@@ -246,15 +212,8 @@
         }
 
         @keyframes heartbeat {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.1);
-            }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
         }
 
         .final-message p {
@@ -285,15 +244,8 @@
         }
 
         @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         /* Animations */
@@ -302,7 +254,6 @@
                 opacity: 0;
                 transform: scale(0.8);
             }
-
             100% {
                 opacity: 1;
                 transform: scale(1);
@@ -310,27 +261,13 @@
         }
 
         @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        /* Generate Hearts */
-        .js-generate-hearts {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 2;
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 12px;
+            width: 10px;
         }
 
         ::-webkit-scrollbar-track {
@@ -342,18 +279,46 @@
             border-radius: 6px;
         }
 
-        /* Responsive Design */
+        /* Responsive Design untuk HP/Mobile */
         @media (max-width: 768px) {
+            .welcome {
+                padding: 2.5rem 1rem 1.5rem;
+            }
+
             .welcome h1 {
-                font-size: 3rem;
+                font-size: 2.5rem;
+            }
+
+            .welcome p {
+                font-size: 1rem;
             }
 
             .memory-container {
                 grid-template-columns: 1fr;
+                padding: 1rem;
+                gap: 1.5rem;
+            }
+
+            .memory-img {
+                height: 220px;
+            }
+
+            .final-message {
+                padding: 2.5rem 1rem;
             }
 
             .final-message h2 {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
+            }
+
+            .final-message p {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+
+            .goodbye-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
             }
         }
     </style>
@@ -361,13 +326,14 @@
 
 <body>
     <div class="magic-sparkles"></div>
+    
+    <!-- Elemen Hati Melayang dengan Posisi Left Menyebar -->
     <div class="floating-hearts">
-        <!-- Hearts will be generated via CSS -->
-        <div class="heart" style="--float-duration: 6s; --delay: 0s; --translate-x: 20px;">💝</div>
-        <div class="heart" style="--float-duration: 8s; --delay: 1s; --translate-x: -30px;">💖</div>
-        <div class="heart" style="--float-duration: 7s; --delay: 2s; --translate-x: 40px;">💗</div>
-        <div class="heart" style="--float-duration: 9s; --delay: 3s; --translate-x: -20px;">💓</div>
-        <div class="heart" style="--float-duration: 5s; --delay: 4s; --translate-x: 30px;">💕</div>
+        <div class="heart" style="left: 10%; --float-duration: 6s; --delay: 0s; --translate-x: 20px;">💝</div>
+        <div class="heart" style="left: 30%; --float-duration: 8s; --delay: 1s; --translate-x: -30px;">💖</div>
+        <div class="heart" style="left: 50%; --float-duration: 7s; --delay: 2s; --translate-x: 40px;">💗</div>
+        <div class="heart" style="left: 70%; --float-duration: 9s; --delay: 3s; --translate-x: -20px;">💓</div>
+        <div class="heart" style="left: 90%; --float-duration: 5s; --delay: 4s; --translate-x: 30px;">💕</div>
     </div>
 
     <section class="welcome">
@@ -377,23 +343,20 @@
 
     <div class="memory-container">
         <div class="memory-card">
-            <img src="./d1.jpg" alt="First Date" class="memory-img">
+            <img src="./d1.jpg" alt="Her Smile" class="memory-img">
             <div class="memory-date">Her Smile Says It All</div>
-            <div class="memory-caption">You’re truly one of the sweetest girls I know, and I feel lucky to have a sis
-                like you.❤️</div>
+            <div class="memory-caption">You’re truly one of the sweetest girls I know, and I feel lucky to have a sis like you.❤️</div>
         </div>
         <div class="memory-card">
-            <img src="./d2.jpg" alt="Beach Day" class="memory-img">
+            <img src="./d2.jpg" alt="Together Vibes" class="memory-img">
             <div class="memory-date">Together Vibes</div>
-            <div class="memory-caption">May your journey ahead be filled with happiness, success, and endless
-                smiles.😊💕</div>
+            <div class="memory-caption">May your journey ahead be filled with happiness, success, and endless smiles.😊💕</div>
         </div>
         <div class="memory-card">
-            <img src="./d3.jpg" alt="Movie Night" class="memory-img">
+            <img src="./d3.jpg" alt="Pretty Soul" class="memory-img">
             <div class="memory-date">Pretty Soul</div>
             <div class="memory-caption">Keep being the amazing person you are—you make every moment brighter.🌸💖</div>
         </div>
-
     </div>
 
     <section class="final-message">
@@ -402,7 +365,7 @@
             I’m so grateful for the bond we have, and for the positivity you always bring into my life.<br>
             On your birthday, I just wish for endless happiness, love, and success to come your way.🌸</p>
         <p>You deserve all the joy in the world—keep shining and spreading your beautiful energy.✨</p>
-        <a href="#" class="goodbye-btn">Until We Meet Again 💝</a>
+        <a href="index.html" class="goodbye-btn">Until We Meet Again 💝</a>
     </section>
 </body>
 

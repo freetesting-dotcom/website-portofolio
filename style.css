@@ -19,59 +19,73 @@ body {
     position: relative;
 }
 
+/* Custom Cursor */
 .cursor {
     width: 20px;
     height: 20px;
-    background: pink;
+    background: #ffb6c1;
     border-radius: 50%;
     position: fixed;
+    top: 0;
+    left: 0;
     pointer-events: none;
     mix-blend-mode: difference;
-    transition: transform 0.2s;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease-out;
+    z-index: 9999;
 }
 
 .container {
     text-align: center;
-    z-index: 1;
+    z-index: 10;
+    padding: 2rem 1.5rem;
+    max-width: 800px;
+    width: 100%;
 }
 
 h1 {
     font-size: 3.5rem;
     color: #ff69b4;
-    text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+    text-shadow: 0 0 12px rgba(255, 105, 180, 0.4);
     margin-bottom: 2rem;
-    opacity: 0;
+    opacity: 0; /* Dikontrol via GSAP */
+    line-height: 1.2;
 }
 
 .greeting {
     font-size: 1.5rem;
     color: #8a2be2;
     margin-bottom: 3rem;
-    min-height: 2em;
+    min-height: 3em;
+    line-height: 1.6;
+    word-wrap: break-word;
 }
 
 .cta-button {
-    padding: 1rem 2rem;
+    display: inline-block;
+    padding: 1rem 2.5rem;
     font-size: 1.2rem;
     background: linear-gradient(45deg, #ff69b4, #ff99cc);
     border: none;
     border-radius: 50px;
     color: white;
+    text-decoration: none;
     cursor: pointer;
     box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
-    transition: transform 0.3s, box-shadow 0.3s;
-    opacity: 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0; /* Dikontrol via GSAP */
 }
 
 .cta-button:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 25px rgba(255, 105, 180, 0.7);
+    box-shadow: 0 0 25px rgba(255, 105, 180, 0.8);
 }
 
 .floating {
-    position: absolute;
+    position: fixed;
     pointer-events: none;
     opacity: 0;
+    z-index: 5;
 }
 
 @keyframes gradientBG {
@@ -80,8 +94,31 @@ h1 {
     100% { background-position: 0% 50%; }
 }
 
+/* Responsif untuk Tablet & HP */
 @media (max-width: 768px) {
-    h1 { font-size: 2rem; }
-    .greeting { font-size: 1.2rem; }
-    .cta-button { font-size: 1rem; }
+    h1 { 
+        font-size: 2.2rem; 
+        margin-bottom: 1.5rem;
+    }
+    
+    .greeting { 
+        font-size: 1.1rem; 
+        margin-bottom: 2.5rem;
+    }
+    
+    .cta-button { 
+        font-size: 1rem; 
+        padding: 0.8rem 2rem;
+    }
+}
+
+/* Penanganan Khusus Perangkat Sentuh (Touchscreen) */
+@media (hover: none) and (pointer: coarse) {
+    * {
+        cursor: auto;
+    }
+    
+    .cursor {
+        display: none !important;
+    }
 }

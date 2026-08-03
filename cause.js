@@ -1,14 +1,14 @@
- // Reasons database
- const reasons = [
+// Reasons database
+const reasons = [
     { 
         text: "Kamu adalah orang yang begitu baik dan luar biasa. 💖", 
         emoji: "🌟",
-        gif: "gif1.gif"
+        gif: "gif1.gif" // Pastikan nama file gif ini benar dan ada di folder yang sama
     },
     { 
         text: "Semoga harimu dipenuhi dengan cinta, tawa, dan kebahagiaan. 🌸 ", 
         emoji: "💗",
-        gif: "gif2.gif"
+        gif: "gif2.gif" // Pastikan nama file gif ini benar dan ada di folder yang sama
     },
     { 
         text: "Semoga kebahagiaan dan segala hal yang didambakan selalu terwujud. ✨ ", 
@@ -28,6 +28,7 @@ const reasonsContainer = document.getElementById('reasons-container');
 const shuffleButton = document.querySelector('.shuffle-button');
 const reasonCounter = document.querySelector('.reason-counter');
 let isTransitioning = false;
+let isStoryMode = false; // Tambahan penanda agar tombol tidak error saat ganti fungsi
 
 // Create reason card with gif
 function createReasonCard(reason) {
@@ -40,10 +41,20 @@ function createReasonCard(reason) {
     
     const gifOverlay = document.createElement('div');
     gifOverlay.className = 'gif-overlay';
-    gifOverlay.innerHTML = `<img src="${reason.gif}" alt="Friendship Memory">`;
+    gifOverlay.innerHTML = `<img src="${reason.gif}" alt="Memori Spesial">`;
     
     card.appendChild(text);
     card.appendChild(gifOverlay);
+    
+    // Fitur khusus HP: Munculkan GIF saat kartu ditap/disentuh
+    card.addEventListener('click', () => {
+        // Hilangkan GIF di kartu lain jika ada, agar fokus ke 1 GIF
+        document.querySelectorAll('.reason-card').forEach(c => {
+            if(c !== card) c.classList.remove('active');
+        });
+        // Tampilkan/Sembunyikan GIF di kartu yang ditap
+        card.classList.toggle('active');
+    });
     
     gsap.from(card, {
         opacity: 0,
@@ -65,7 +76,7 @@ function displayNewReason() {
         reasonsContainer.appendChild(card);
         
         // Update counter
-        reasonCounter.textContent = `Reason ${currentReasonIndex + 1} of ${reasons.length}`;
+        reasonCounter.textContent = `Pesan ${currentReasonIndex + 1} dari ${reasons.length}`;
         
         currentReasonIndex++;
 
@@ -78,15 +89,7 @@ function displayNewReason() {
                 onComplete: () => {
                     shuffleButton.textContent = "Enter Our Storylane 💫";
                     shuffleButton.classList.add('story-mode');
-                    shuffleButton.addEventListener('click', () => {
-                        gsap.to('body', {
-                            opacity: 0,
-                            duration: 1,
-                            onComplete: () => {
-                                window.location.href = 'last.html'; // Replace with the actual URL of the next page
-                            }
-                        });
-                    });
+                    isStoryMode = true; // Mengaktifkan mode pindah halaman
                 }
             });
         }
@@ -97,15 +100,24 @@ function displayNewReason() {
         setTimeout(() => {
             isTransitioning = false;
         }, 500);
-    } else {
-        // Handle navigation to new page or section
-        window.location.href = "#storylane";
-        // Or trigger your next page functionality
     }
 }
 
 // Initialize button click
 shuffleButton.addEventListener('click', () => {
+    // Jika tombol sudah berubah jadi 'Enter Our Storylane', pindah ke last.html
+    if (isStoryMode) {
+        gsap.to('body', {
+            opacity: 0,
+            duration: 1,
+            onComplete: () => {
+                window.location.href = 'last.html'; 
+            }
+        });
+        return; // Hentikan fungsi di sini agar tidak error
+    }
+
+    // Jika belum, lanjutkan memunculkan pesan baru
     gsap.to(shuffleButton, {
         scale: 0.9,
         duration: 0.1,
@@ -115,7 +127,7 @@ shuffleButton.addEventListener('click', () => {
     displayNewReason();
 });
 
-// Floating elements function (same as before)
+// Floating elements function
 function createFloatingElement() {
     const elements = ['🌸', '✨', '💖', '🦋', '⭐'];
     const element = document.createElement('div');
@@ -133,16 +145,6 @@ function createFloatingElement() {
         onComplete: () => element.remove()
     });
 }
-
-// Custom cursor (same as before)
-const cursor = document.querySelector('.custom-cursor');
-document.addEventListener('mousemove', (e) => {
-    gsap.to(cursor, {
-        x: e.clientX - 15,
-        y: e.clientY - 15,
-        duration: 0.2
-    });
-});
 
 // Create initial floating elements
 setInterval(createFloatingElement, 2000);
