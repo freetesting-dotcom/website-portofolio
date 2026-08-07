@@ -6,17 +6,24 @@
 }
 
 body {
+    /* 1. Jalur file foto kamu */
+    background-image: url('Wallpaper.jpeg'); 
+    
+    /* 2. Mengatur agar foto menutupi seluruh layar HP & Laptop tanpa terpotong aneh */
+    background-size: cover; 
+    
+    /* 3. Posisi foto selalu tepat di tengah */
+    background-position: center; 
+    
+    /* 4. Mencegah foto mengulang (repeat) jika layar sangat panjang */
+    background-repeat: no-repeat; 
+    
+    /* 5. Membuat foto tetap di tempat saat layar di-scroll */
+    background-attachment: fixed; 
+    
+    /* Mengisi seluruh tinggi layar */
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(-45deg, #fee9f7, #e8f5fe, #fef2e8, #f0ffe8);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
-    overflow: hidden;
-    position: relative;
+    margin: 0;
 }
 
 /* Custom Cursor */
