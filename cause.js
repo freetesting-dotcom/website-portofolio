@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         endingSection.style.display = 'none';
     }
 
-    // 3. Create Floating Elements (Emojis)
+    // 2. Element & Fungsi Floating Emojis (Emot Terbang)
     const floatingElements = ['💖', '✨', '🌸', '💫', '💕'];
     
     function createFloating() {
@@ -61,7 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
             onComplete: () => element.remove()
         });
     }
-    
+
+    // PERBAIKAN: Jalankan emot terbang secara berulang tiap 400ms (0.4 detik)
+    setInterval(createFloating, 400);
+
     // Fungsi untuk menampilkan pesan & GIF berdasarkan indeksnya
     function displayReason(index) {
         if (index < reasons.length) {
@@ -127,6 +130,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- EVENT KLIK TOMBOL UNTUK PINDAH KE PESAN BERIKUTNYA ---
     if (button) {
         button.addEventListener('click', () => {
+            // PERBAIKAN: Memunculkan ekstra emot terbang sekaligus saat tombol diklik
+            for (let i = 0; i < 5; i++) {
+                createFloating();
+            }
+
             currentIndex++;
             displayReason(currentIndex);
         });
