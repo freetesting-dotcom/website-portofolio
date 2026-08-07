@@ -1,22 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Cek apakah elemen audio sudah pernah dibuat di sesi browser ini agar tidak duplikat
-    let audio = window.sharedAudio;
+    const audio = new Audio('./sinarengan.mp3.mp3');
+    audio.loop = true;
+    audio.preload = 'auto';
 
-    if (!audio) {
-        audio = new Audio('./sinarengan.mp3.mp3');
-        audio.loop = true;
-        audio.preload = 'auto'; // Memuat file audio lebih awal di background
-        window.sharedAudio = audio;
+    const savedTime = localStorage.getItem('bgm_time');
 
-        // Ambil detik terakhir lagu jika pindah halaman
-        const savedTime = localStorage.getItem('bgm_time');
+    // 1. KUNCI PERBAIKAN: Setik lagu HANYA diatur setelah metadata/file audio siap
+    audio.addEventListener('loadedmetadata', () => {
         if (savedTime) {
             audio.currentTime = parseFloat(savedTime);
         }
-    }
+    });
 
-    // Simpan detik lagu secara realtime
+    // 2. Simpan waktu saat lagu berjalan
     audio.addEventListener('timeupdate', () => {
+        localStorage.setItem('bgm_time', audio.currentTime);
+    });
+
+    // 3. Simpan detik paling akurat tepat sebelum pengguna meninggalkan halaman
+    window.addEventListener('beforeunload', () => {
         localStorage.setItem('bgm_time', audio.currentTime);
     });
 
@@ -28,11 +30,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Putar lagu jika sesi sebelumnya statusnya sedang menyala
     if (localStorage.getItem('bgm_playing') === 'true') {
         playMusic();
     }
 
-    // Nyalakan musik otomatis saat ada interaksi klik pertama
+    // Jalankan musik saat pengguna mengeklik halaman jika autoplay terblokir
     document.addEventListener('click', () => {
         if (audio.paused) {
             playMusic();
