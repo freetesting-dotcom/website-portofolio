@@ -1,20 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Buat elemen audio (sesuai nama file di sidebar kamu)
-    const audio = new Audio('./sinarengan.mp3.mp3'); 
-    audio.loop = true; // Agar lagu mengulang otomatis jika habis
+    // Cek apakah elemen audio sudah pernah dibuat di sesi browser ini agar tidak duplikat
+    let audio = window.sharedAudio;
 
-    // 2. Ambil detik terakhir lagu jika pengguna pindah halaman
-    const savedTime = localStorage.getItem('bgm_time');
-    if (savedTime) {
-        audio.currentTime = parseFloat(savedTime);
+    if (!audio) {
+        audio = new Audio('./sinarengan.mp3.mp3');
+        audio.loop = true;
+        audio.preload = 'auto'; // Memuat file audio lebih awal di background
+        window.sharedAudio = audio;
+
+        // Ambil detik terakhir lagu jika pindah halaman
+        const savedTime = localStorage.getItem('bgm_time');
+        if (savedTime) {
+            audio.currentTime = parseFloat(savedTime);
+        }
     }
 
-    // 3. Simpan detik lagu secara realtime setiap saat
+    // Simpan detik lagu secara realtime
     audio.addEventListener('timeupdate', () => {
         localStorage.setItem('bgm_time', audio.currentTime);
     });
 
-    // 4. Fungsi pemutar lagu
     function playMusic() {
         audio.play().then(() => {
             localStorage.setItem('bgm_playing', 'true');
@@ -23,12 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Cek apakah musik sebelumnya sudah dinyalakan
     if (localStorage.getItem('bgm_playing') === 'true') {
         playMusic();
     }
 
-    // Lagu akan mulai menyala otomatis saat pengguna pertama kali mengeklik apa saja di layar.
+    // Nyalakan musik otomatis saat ada interaksi klik pertama
     document.addEventListener('click', () => {
         if (audio.paused) {
             playMusic();
