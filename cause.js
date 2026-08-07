@@ -31,6 +31,37 @@ document.addEventListener('DOMContentLoaded', () => {
         endingSection.style.display = 'none';
     }
 
+    // 3. Create Floating Elements (Emojis)
+    const floatingElements = ['💖', '✨', '🌸', '💫', '💕'];
+    
+    function createFloating() {
+        if (typeof gsap === 'undefined') return;
+
+        const element = document.createElement('div');
+        element.className = 'floating';
+        element.textContent = floatingElements[Math.floor(Math.random() * floatingElements.length)];
+        
+        // Inline styles untuk keamanan layout
+        element.style.position = 'fixed';
+        element.style.pointerEvents = 'none';
+        element.style.zIndex = '9999';
+        element.style.left = Math.random() * 100 + 'vw';
+        element.style.top = '100vh';
+        element.style.fontSize = (Math.random() * 20 + 20) + 'px';
+        
+        document.body.appendChild(element);
+
+        gsap.to(element, {
+            y: -window.innerHeight - 100,
+            x: Math.random() * 100 - 50,
+            rotation: Math.random() * 360,
+            duration: Math.random() * 4 + 5,
+            opacity: 0.8,
+            ease: "power1.out",
+            onComplete: () => element.remove()
+        });
+    }
+    
     // Fungsi untuk menampilkan pesan & GIF berdasarkan indeksnya
     function displayReason(index) {
         if (index < reasons.length) {
